@@ -1,0 +1,52 @@
+[
+  {
+    "id": "asset-001",
+    "hostname": "WIN-WS-0042",
+    "os": "Windows 11 Pro 23H2",
+    "ip": "10.10.4.42",
+    "riskScore": 94,
+    "lastSeen": "2026-05-13T09:47:05Z",
+    "openDetections": 2,
+    "tags": ["workstation", "finance"]
+  },
+  {
+    "id": "asset-002",
+    "hostname": "WIN-SRV-DC01",
+    "os": "Windows Server 2022",
+    "ip": "10.10.1.10",
+    "riskScore": 81,
+    "lastSeen": "2026-05-13T09:50:44Z",
+    "openDetections": 1,
+    "tags": ["domain-controller", "critical-infrastructure"]
+  },
+  {
+    "id": "asset-003",
+    "hostname": "LINUX-API-07",
+    "os": "Ubuntu 22.04 LTS",
+    "ip": "10.10.8.7",
+    "riskScore": 67,
+    "lastSeen": "2026-05-13T09:45:18Z",
+    "openDetections": 1,
+    "tags": ["server", "api", "internet-facing"]
+  },
+  {
+    "id": "asset-004",
+    "hostname": "LINUX-DB-01",
+    "os": "Red Hat Enterprise Linux 9",
+    "ip": "10.10.2.5",
+    "riskScore": 72,
+    "lastSeen": "2026-05-13T09:50:19Z",
+    "openDetections": 1,
+    "tags": ["server", "database", "pci-scope"]
+  },
+  {
+    "id": "asset-005",
+    "hostname": "WIN-WS-0019",
+    "os": "Windows 11 Enterprise 23H2",
+    "ip": "10.10.4.19",
+    "riskScore": 98,
+    "lastSeen": "2026-05-13T09:52:01Z",
+    "openDetections": 1,
+    "tags": ["workstation", "executive"]
+  }
+]

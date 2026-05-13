@@ -1,0 +1,102 @@
+[
+  {
+    "id": "det-001",
+    "rule": "Suspicious PowerShell Execution",
+    "severity": "critical",
+    "asset": "WIN-WS-0042",
+    "status": "open",
+    "firstSeen": "2026-05-13T08:14:22Z",
+    "lastSeen": "2026-05-13T09:47:05Z",
+    "alerts": 14
+  },
+  {
+    "id": "det-002",
+    "rule": "Lateral Movement via SMB",
+    "severity": "high",
+    "asset": "WIN-SRV-DC01",
+    "status": "investigating",
+    "firstSeen": "2026-05-13T07:03:11Z",
+    "lastSeen": "2026-05-13T09:50:44Z",
+    "alerts": 7
+  },
+  {
+    "id": "det-003",
+    "rule": "Brute Force — SSH Login Attempts",
+    "severity": "high",
+    "asset": "LINUX-API-07",
+    "status": "open",
+    "firstSeen": "2026-05-12T22:31:00Z",
+    "lastSeen": "2026-05-13T09:45:18Z",
+    "alerts": 312
+  },
+  {
+    "id": "det-004",
+    "rule": "Outbound C2 Beacon Detected",
+    "severity": "critical",
+    "asset": "WIN-WS-0019",
+    "status": "open",
+    "firstSeen": "2026-05-13T06:58:33Z",
+    "lastSeen": "2026-05-13T09:52:01Z",
+    "alerts": 22
+  },
+  {
+    "id": "det-005",
+    "rule": "New Scheduled Task Created",
+    "severity": "medium",
+    "asset": "WIN-WS-0088",
+    "status": "resolved",
+    "firstSeen": "2026-05-12T14:20:09Z",
+    "lastSeen": "2026-05-12T15:10:42Z",
+    "alerts": 1
+  },
+  {
+    "id": "det-006",
+    "rule": "Privilege Escalation via Token Impersonation",
+    "severity": "high",
+    "asset": "WIN-SRV-APP02",
+    "status": "investigating",
+    "firstSeen": "2026-05-13T05:44:17Z",
+    "lastSeen": "2026-05-13T09:31:55Z",
+    "alerts": 4
+  },
+  {
+    "id": "det-007",
+    "rule": "DNS Tunneling Activity",
+    "severity": "medium",
+    "asset": "LINUX-WEB-03",
+    "status": "open",
+    "firstSeen": "2026-05-12T18:09:44Z",
+    "lastSeen": "2026-05-13T09:48:22Z",
+    "alerts": 56
+  },
+  {
+    "id": "det-008",
+    "rule": "Credential Dumping — LSASS Access",
+    "severity": "critical",
+    "asset": "WIN-WS-0055",
+    "status": "open",
+    "firstSeen": "2026-05-13T09:01:38Z",
+    "lastSeen": "2026-05-13T09:53:14Z",
+    "alerts": 3
+  },
+  {
+    "id": "det-009",
+    "rule": "Unusual Parent-Child Process Relationship",
+    "severity": "low",
+    "asset": "WIN-WS-0031",
+    "status": "resolved",
+    "firstSeen": "2026-05-11T11:22:00Z",
+    "lastSeen": "2026-05-11T11:22:00Z",
+    "alerts": 1
+  },
+  {
+    "id": "det-010",
+    "rule": "Large Data Exfiltration via HTTP POST",
+    "severity": "high",
+    "asset": "LINUX-DB-01",
+    "status": "investigating",
+    "firstSeen": "2026-05-13T08:55:07Z",
+    "lastSeen": "2026-05-13T09:50:19Z",
+    "alerts": 9
+  }
+]

@@ -1,0 +1,74 @@
+/* RDS GOVERNED - DO NOT MODIFY */
+/* Source: /Users/rhavens/projects/knowledge-layer/tokens/rds-compiled.tokens.json */
+/* Theme: RDS / dark */
+:root {
+  /* ── Brand ──────────────────────────────────────────── */
+  --rds-color-brand: #E85E26;
+
+  /* ── Primary (light blue) ───────────────────────────── */
+  --rds-color-primary: #7FDCFF;
+  --rds-color-primary-dark: #ABE6FD;
+  --rds-color-primary-light: #E4F1FB;
+
+  /* ── Semantic status ────────────────────────────────── */
+  --rds-color-danger:  #D43132;
+  --rds-color-warning: #F58F30;
+  --rds-color-success: #4EDAA9;
+  --rds-color-info:    #6DA8C6;
+
+  /* ── Severity / risk ────────────────────────────────── */
+  --rds-color-severity-critical:     #942D31;
+  --rds-color-severity-high:         #D43132;
+  --rds-color-severity-medium:       #F58F30;
+  --rds-color-severity-low:          #FCE15F;
+  --rds-color-severity-very-low:     #6DA8C6;
+  --rds-color-severity-informational:#6DA8C6;
+  --rds-color-severity-healthy:      #4EDAA9;
+
+  /* ── Surfaces / elevation ───────────────────────────── */
+  --rds-color-surface-base:    #24313C;   /* elevation-0 */
+  --rds-color-surface-raised:  #3D4B56;   /* elevation-1 */
+  --rds-color-surface-overlay: #24313C;   /* elevation-2 */
+  --rds-color-surface-sunken:  #1A252D;
+
+  /* ── Text ───────────────────────────────────────────── */
+  --rds-color-text-primary:   #FFFFFF;
+  --rds-color-text-secondary: #B1C1C9;
+  --rds-color-text-disabled:  #5D6D75;
+  --rds-color-text-inverse:   #24313C;
+
+  /* ── Borders ────────────────────────────────────────── */
+  --rds-color-border-default:  #5D6D75;
+  --rds-color-border-muted:    #3D4B56;
+  --rds-color-border-emphasis: #7FDCFF;
+
+  /* ── Spacing (8px base) ─────────────────────────────── */
+  --rds-space-1:  8px;
+  --rds-space-2:  16px;
+  --rds-space-3:  24px;
+  --rds-space-4:  32px;
+  --rds-space-5:  40px;
+  --rds-space-6:  48px;
+  --rds-space-8:  64px;
+  --rds-space-10: 80px;
+  --rds-space-12: 96px;
+
+  /* ── Border radius ──────────────────────────────────── */
+  --rds-radius-none:   0px;
+  --rds-radius-sm:     2px;
+  --rds-radius-md:     4px;
+  --rds-radius-lg:     8px;
+  --rds-radius-full:   999px;
+
+  /* ── Layout ─────────────────────────────────────────── */
+  --rds-sidebar-width:      240px;
+  --rds-content-max-width:  1280px;
+  --rds-topbar-height:      56px;
+
+  /* ── Z-index ────────────────────────────────────────── */
+  --rds-z-dropdown: 1000;
+  --rds-z-sticky:   1100;
+  --rds-z-overlay:  1200;
+  --rds-z-modal:    1300;
+  --rds-z-toast:    1400;
+}
