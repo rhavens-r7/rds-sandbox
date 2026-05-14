@@ -3,13 +3,16 @@ import {
   Box, Typography, Paper, Table, TableBody, TableCell,
   TableContainer, TableHead, TableRow, Chip, TextField,
   Select, MenuItem, FormControl, InputLabel, Grid,
-  IconButton, Tooltip, Stack, useTheme,
+  IconButton, Tooltip, Stack, Button, useTheme,
+  SectionHeader,
 } from '@rapid7/rds'
 import SearchIcon from '@mui/icons-material/Search'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import { CONTENT_MAX_WIDTH } from '../App'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import ListingTemplate from './ListingTemplate'
 import detections from '../mock-data/detections.json'
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 const SEVERITY_KEYS = ['critical', 'high', 'medium', 'low']
 
 function useSeverityPalette() {
@@ -26,7 +29,7 @@ function useSeverityPalette() {
 
 function SeverityBadge({ severity }) {
   const palette = useSeverityPalette()
-  const style = palette[severity] ?? palette.info
+  const style   = palette[severity] ?? palette.info
   return (
     <Chip
       label={severity.toUpperCase()}
@@ -46,19 +49,150 @@ function SeverityBadge({ severity }) {
 }
 
 function StatusChip({ status }) {
-  const colorMap = { open: 'error', investigating: 'warning', resolved: 'success' }
+  const map = { open: 'error', investigating: 'warning', resolved: 'success' }
   return (
     <Chip
       label={status.charAt(0).toUpperCase() + status.slice(1)}
       size="small"
-      color={colorMap[status] ?? 'default'}
+      color={map[status] ?? 'default'}
       variant="outlined"
     />
   )
 }
 
+// ─── Slot content ─────────────────────────────────────────────────────────────
+function DetectionHeader({ count, total }) {
+  return (
+    <SectionHeader
+      header="Detections"
+      subheaderSlot={
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          {count} of {total} detections
+        </Typography>
+      }
+      actionsSlot={
+        <Tooltip title="Export">
+          <IconButton size="small">
+            <FileDownloadIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      }
+      divider
+    />
+  )
+}
+
+function DetectionFilterBar({ search, setSearch, severityFilter, setSeverity, statusFilter, setStatus }) {
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={6}>
+        <TextField
+          fullWidth size="small"
+          placeholder="Search rule or asset…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          InputProps={{
+            startAdornment: <SearchIcon fontSize="small" sx={{ color: 'text.secondary', mr: 1 }} />,
+          }}
+        />
+      </Grid>
+      <Grid item xs={6} md={3}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Severity</InputLabel>
+          <Select value={severityFilter} label="Severity" onChange={(e) => setSeverity(e.target.value)}>
+            <MenuItem value="all">All severities</MenuItem>
+            {SEVERITY_KEYS.map((s) => (
+              <MenuItem key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={6} md={3}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Status</InputLabel>
+          <Select value={statusFilter} label="Status" onChange={(e) => setStatus(e.target.value)}>
+            <MenuItem value="all">All statuses</MenuItem>
+            <MenuItem value="open">Open</MenuItem>
+            <MenuItem value="investigating">Investigating</MenuItem>
+            <MenuItem value="resolved">Resolved</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
+  )
+}
+
+function DetectionTable({ rows }) {
+  return (
+    <TableContainer component={Paper}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Rule</TableCell>
+            <TableCell>Severity</TableCell>
+            <TableCell>Asset</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell align="right">Alerts</TableCell>
+            <TableCell>First Seen</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow key={row.id} hover sx={{ cursor: 'pointer', '&:last-child td': { border: 0 } }}>
+              <TableCell>
+                <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
+                  {row.rule}
+                </Typography>
+              </TableCell>
+              <TableCell><SeverityBadge severity={row.severity} /></TableCell>
+              <TableCell>
+                <Typography variant="body2" sx={{ fontFamily: 'monospace', color: 'info.main' }}>
+                  {row.asset}
+                </Typography>
+              </TableCell>
+              <TableCell><StatusChip status={row.status} /></TableCell>
+              <TableCell align="right">
+                <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                  {row.alerts}
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  {new Date(row.firstSeen).toLocaleString()}
+                </Typography>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+function DetectionToolbar({ selectedCount }) {
+  return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      {selectedCount > 0 && (
+        <>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            {selectedCount} selected
+          </Typography>
+          <Button size="small" variant="outlined" color="error">Close</Button>
+          <Button size="small" variant="outlined">Assign</Button>
+        </>
+      )}
+      <Box sx={{ flex: 1 }} />
+      <Tooltip title="Filter columns">
+        <IconButton size="small" sx={{ color: 'text.secondary' }}>
+          <FilterListIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    </Stack>
+  )
+}
+
+// ─── Page ──────────────────────────────────────────────────────────────────────
 export default function DetectionListing() {
-  const theme = useTheme()
   const [search, setSearch]           = useState('')
   const [severityFilter, setSeverity] = useState('all')
   const [statusFilter, setStatus]     = useState('all')
@@ -71,105 +205,17 @@ export default function DetectionListing() {
   })
 
   return (
-    <Box sx={{ p: 3, maxWidth: CONTENT_MAX_WIDTH, mx: 'auto' }}>
-      {/* Header */}
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-        <Box>
-          <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.primary' }}>
-            Detections
-          </Typography>
-          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            {filtered.length} of {detections.length} detections
-          </Typography>
-        </Box>
-        <Tooltip title="Filter options">
-          <IconButton size="small" sx={{ color: 'text.secondary' }}>
-            <FilterListIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-      </Stack>
-
-      {/* Filter bar */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            size="small"
-            placeholder="Search rule or asset…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <SearchIcon fontSize="small" sx={{ color: 'text.secondary', mr: 1 }} />
-              ),
-            }}
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Severity</InputLabel>
-            <Select value={severityFilter} label="Severity" onChange={(e) => setSeverity(e.target.value)}>
-              <MenuItem value="all">All severities</MenuItem>
-              {SEVERITY_KEYS.map((s) => <MenuItem key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={6} md={3}>
-          <FormControl fullWidth size="small">
-            <InputLabel>Status</InputLabel>
-            <Select value={statusFilter} label="Status" onChange={(e) => setStatus(e.target.value)}>
-              <MenuItem value="all">All statuses</MenuItem>
-              <MenuItem value="open">Open</MenuItem>
-              <MenuItem value="investigating">Investigating</MenuItem>
-              <MenuItem value="resolved">Resolved</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-
-      {/* Table */}
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell>Rule</TableCell>
-              <TableCell>Severity</TableCell>
-              <TableCell>Asset</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell align="right">Alerts</TableCell>
-              <TableCell>First Seen</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filtered.map((row) => (
-              <TableRow key={row.id} hover sx={{ cursor: 'pointer', '&:last-child td': { border: 0 } }}>
-                <TableCell>
-                  <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
-                    {row.rule}
-                  </Typography>
-                </TableCell>
-                <TableCell><SeverityBadge severity={row.severity} /></TableCell>
-                <TableCell>
-                  <Typography variant="body2" sx={{ fontFamily: 'monospace', color: 'info.main' }}>
-                    {row.asset}
-                  </Typography>
-                </TableCell>
-                <TableCell><StatusChip status={row.status} /></TableCell>
-                <TableCell align="right">
-                  <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                    {row.alerts}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                    {new Date(row.firstSeen).toLocaleString()}
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+    <ListingTemplate
+      header={<DetectionHeader count={filtered.length} total={detections.length} />}
+      filterBar={
+        <DetectionFilterBar
+          search={search} setSearch={setSearch}
+          severityFilter={severityFilter} setSeverity={setSeverity}
+          statusFilter={statusFilter} setStatus={setStatus}
+        />
+      }
+      toolbar={<DetectionToolbar selectedCount={0} />}
+      dataView={<DetectionTable rows={filtered} />}
+    />
   )
 }
